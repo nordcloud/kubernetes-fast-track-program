@@ -1,0 +1,32 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tenant-c
+  labels:
+    name: tenant-c
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-c
+  name: app-c
+  namespace: tenant-c
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-c
+  template:
+    metadata:
+      labels:
+        app: app-c
+    spec:
+      containers:
+      - name: backend
+        image: polinux/stress:latest
+        command: ["stress", "--verbose", "--vm", "1", "--vm-bytes", "1024M"]
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"

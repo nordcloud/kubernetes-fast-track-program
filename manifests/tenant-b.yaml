@@ -1,0 +1,71 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tenant-b
+  labels:
+    name: tenant-b
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-b
+  name: app-b
+  namespace: tenant-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-b
+  template:
+    metadata:
+      labels:
+        app: app-b
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app-b
+  name: app-b
+  namespace: tenant-b
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: app-b
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: client
+  name: client
+  namespace: tenant-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: busybox
+        command:
+        - /bin/sh
+        - -c
+        - "while true; do wget http://app-b.tenant-b.svc:80/foo &>/dev/null; sleep 5; done"

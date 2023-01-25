@@ -1,0 +1,46 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tenant-a
+  labels:
+    name: tenant-a
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-a
+  name: app-a
+  namespace: tenant-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-a
+  template:
+    metadata:
+      labels:
+        app: app-a
+    spec:
+      containers:
+      - image: mginx
+        name: nginx
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app-a
+  name: app-a
+  namespace: tenant-a
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: app-a
