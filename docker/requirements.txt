@@ -1,0 +1,13 @@
+# This file lists package dependencies
+# for our simple Python web server.
+
+click==8.1.3
+docutils==0.19
+Flask==2.2.2
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.2
+protobuf==4.21.12
+PyYAML==6.0
+six==1.16.0
+Werkzeug==2.2.2
