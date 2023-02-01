@@ -1,0 +1,5 @@
+# This file lists package dependencies
+# for our simple Python web server.
+
+flask
+redis
