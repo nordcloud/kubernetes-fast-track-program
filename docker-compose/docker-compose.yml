@@ -16,6 +16,8 @@ services:
       - overlay
   redis:
     image: "redis:alpine"
+    ports:
+      - "6379:6379"
     networks: 
       - overlay
 networks:
