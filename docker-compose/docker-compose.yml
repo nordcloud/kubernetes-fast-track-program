@@ -20,5 +20,13 @@ services:
       - "6379:6379"
     networks: 
       - overlay
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - "8001:8001"
+    volumes:
+      - redisinsight:/db
+volumes:
+  redisinsight:
 networks:
   overlay:
